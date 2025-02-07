@@ -22,11 +22,18 @@ public class Filter {
 		
 		boolean showShortStatistics = false;
 		
-		for (String arg : args) {
-            if (arg.equals("-s")) {
+		String prefix = "";
+		
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("-s")) {
                 showShortStatistics = true;
-            } else {
-                files.add(arg);
+            }
+			else if (args[i].equals("-p") && i + 1 < args.length) {
+                prefix = args[i + 1];
+                i++;
+            }
+			else {
+                files.add(args[i]);
             }
         }
 
@@ -38,6 +45,11 @@ public class Filter {
 		int integerCounter = 0;
 		int doubleCounter = 0;
         
+		if (files.isEmpty()){
+			System.out.println("Программе не переданы файлы для фильтрации");
+			return;
+		}
+		
         for (String fileName : files) {
             File file = new File(fileName);
             if (!file.exists() || !file.isFile()) {
@@ -65,9 +77,10 @@ public class Filter {
                 System.out.println("Ошибка чтения файла: " + fileName);
             }
         }
-        writeToFile("strings.txt", stringArray);
-        writeToFile("integers.txt", integerArray);
-        writeToFile("floats.txt", doubleArray);
+		
+        writeToFile(prefix + "strings.txt", stringArray);
+        writeToFile(prefix + "integers.txt", integerArray);
+        writeToFile(prefix + "floats.txt", doubleArray);
 		
 		if (showShortStatistics == true) {
 			System.out.println("Краткая статистика:");
