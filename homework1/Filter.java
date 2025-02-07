@@ -18,11 +18,27 @@ public class Filter {
             return;
         }
 
+		List<String> files = new ArrayList<>();
+		
+		boolean showShortStatistics = false;
+		
+		for (String arg : args) {
+            if (arg.equals("-s")) {
+                showShortStatistics = true;
+            } else {
+                files.add(arg);
+            }
+        }
+
         List<String> stringArray = new ArrayList<>();
         List<Integer> integerArray = new ArrayList<>();
         List<Double> doubleArray = new ArrayList<>();
+		
+		int stringCounter = 0;
+		int integerCounter = 0;
+		int doubleCounter = 0;
         
-        for (String fileName : args) {
+        for (String fileName : files) {
             File file = new File(fileName);
             if (!file.exists() || !file.isFile()) {
                 System.out.println("Файл не найден:" + fileName);
@@ -35,11 +51,14 @@ public class Filter {
                     try {
                         if (line.contains(".")) {
                             doubleArray.add(Double.parseDouble(line));
+							doubleCounter += 1;
                         } else {
                             integerArray.add(Integer.parseInt(line));
+							integerCounter += 1;
                         }
                     } catch (NumberFormatException e) {
                         stringArray.add(line);
+						stringCounter += 1;
                     }
                 }
             } catch (IOException e) {
@@ -49,5 +68,12 @@ public class Filter {
         writeToFile("strings.txt", stringArray);
         writeToFile("integers.txt", integerArray);
         writeToFile("floats.txt", doubleArray);
+		
+		if (showShortStatistics == true) {
+			System.out.println("Краткая статистика:");
+			System.out.println("Строки: " + stringCounter);
+			System.out.println("Целые числа: " + integerCounter);
+			System.out.println("Вещественные числа: " + doubleCounter);
+		}
     }
 }
