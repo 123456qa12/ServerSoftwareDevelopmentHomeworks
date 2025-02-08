@@ -2,9 +2,9 @@ import java.io.*;
 import java.util.*;
 
 public class Filter {
-    private static <T> void writeToFile(String directory, String fileName, List<T> data) {
+    private static <T> void writeToFile(String directory, String fileName, List<T> data, boolean append) {
         File outputFile = new File(directory, fileName);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, append))) {
             for (T item : data) {
                 writer.write(item.toString());
                 writer.newLine();
@@ -25,6 +25,7 @@ public class Filter {
         boolean showFullStatistics = false;
         boolean filesHaveNumbers = true;
         boolean filesHaveStrings = true;
+		boolean appendToFile = false;
         String prefix = "";
 		String outputPath = "";
 
@@ -39,6 +40,8 @@ public class Filter {
             } else if (args[i].equals("-o") && i + 1 < args.length) {
                 outputPath = args[i + 1];
                 i++;
+            } else if (args[i].equals("-a")) {
+                appendToFile = true;
             } else {
                 files.add(args[i]);
             }
@@ -135,9 +138,9 @@ public class Filter {
 			}
 		}
 		
-        if (stringCounter != 0) writeToFile(outputPath, prefix + "strings.txt", stringArray);
-        if (integerCounter != 0) writeToFile(outputPath, prefix + "integers.txt", integerArray);
-        if (doubleCounter != 0) writeToFile(outputPath, prefix + "floats.txt", doubleArray);
+        if (stringCounter != 0) writeToFile(outputPath, prefix + "strings.txt", stringArray, appendToFile);
+        if (integerCounter != 0) writeToFile(outputPath, prefix + "integers.txt", integerArray, appendToFile);
+        if (doubleCounter != 0) writeToFile(outputPath, prefix + "floats.txt", doubleArray, appendToFile);
 
         if (showShortStatistics || showFullStatistics) {
             System.out.println("Строки: " + stringCounter);
@@ -164,4 +167,3 @@ public class Filter {
         }
     }
 }
-
