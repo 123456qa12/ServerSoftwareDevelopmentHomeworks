@@ -31,7 +31,8 @@ public class Filter {
                 showShortStatistics = true;
             } else if (args[i].equals("-f")) {
                 showFullStatistics = true;
-            } else if (args[i].equals("-p") && i + 1 < args.length) {
+            }
+			if (args[i].equals("-p") && i + 1 < args.length) {
                 prefix = args[i + 1];
                 i++;
             } else {
@@ -130,9 +131,9 @@ public class Filter {
 			}
 		}
 		
-        writeToFile(prefix + "strings.txt", stringArray);
-        writeToFile(prefix + "integers.txt", integerArray);
-        writeToFile(prefix + "floats.txt", doubleArray);
+        if (stringCounter != 0) writeToFile(prefix + "strings.txt", stringArray);
+        if (integerCounter != 0)writeToFile(prefix + "integers.txt", integerArray);
+        if (doubleCounter != 0) writeToFile(prefix + "floats.txt", doubleArray);
 
         if (showShortStatistics || showFullStatistics) {
             System.out.println("Строки: " + stringCounter);
