@@ -1,9 +1,18 @@
 package com.example.homework7.model;
 
+import jakarta.persistence.*;
+
+@MappedSuperclass
 public class Measurement {
 
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	
+	@Column(nullable = false)
     private String name;
+	
+	@Column(nullable = false, length = 5)
     private String symbol;
 
     public Long getId() { return id; }

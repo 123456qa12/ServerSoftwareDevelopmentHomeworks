@@ -1,12 +1,25 @@
 package com.example.homework7.model;
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "customer")
 public class Customer {
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	
+	@Column(nullable = false)
     private String name;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
+	
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
 
     public Long getId() { return id; }

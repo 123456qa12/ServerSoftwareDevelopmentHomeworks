@@ -1,9 +1,21 @@
 package com.example.homework7.model;
 
-public class Address {
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "address")
+public class Address {
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(nullable = false)
     private String city;
+	
+	@Column(nullable = false)
     private String street;
+	
+	@Column(nullable = false, length = 10)
     private String zipcode;
 
     public String getCity() { return city; }
